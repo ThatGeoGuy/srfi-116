@@ -1,0 +1,15 @@
+;; -*- Hen -*-
+
+((synopsis "SRFI-116: Immutable Lists.")
+ (version "1.5")
+ (license "BSD")
+ (category data)
+ (test-dependencies test)
+ (author "John Cowan")
+ ;(repo "https://github.com/scheme-requests-for-implementation/srfi-116")
+ (maintainer "Jeremy Steward")
+ (license "BSD")
+ (components
+  (extension
+   srfi-116
+   (csc-options "-O3" "-d0"))))

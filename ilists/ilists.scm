@@ -1,7 +1,14 @@
 (module srfi-116 ()
   (import scheme)
-  (import (only chicken
-    include define-record-type define-record-printer error))
+  (cond-expand
+    (chicken-5
+     (import (only (chicken base)
+                   include define-record-type define-record-printer error)
+             (chicken module)))
+    (else
+     (import (only chicken
+                   include define-record-type define-record-printer error))))
+
   (export iq)
   (export ipair ilist xipair ipair* make-ilist ilist-copy ilist-tabulate iiota)
   (export ipair?)

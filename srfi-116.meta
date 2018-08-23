@@ -7,6 +7,8 @@
         "ilists/ilists-impl.scm"
         "ilists/ilists-test.scm"
         "tests/run.scm"
+        "srfi-116.egg"
+        "srfi-116.scm"
         "srfi-116.setup"
         "srfi-116.meta"
         "srfi-116.release-info"

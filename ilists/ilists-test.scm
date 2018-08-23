@@ -1,20 +1,23 @@
-(use test)
-(use srfi-116)
+(cond-expand
+  (chicken-5
+   (import test)
+   (import srfi-116))
+  (else
+   (use test)
+   (use srfi-116)))
 
-(test-group "ilists"
-
+(define abc (ilist 'a 'b 'c))
+(define abc-dot-d (ipair* 'a 'b 'c 'd))
+(define abc-copy (ilist-copy abc))
 (test-group "ilists/constructors"
-  (define abc (ilist 'a 'b 'c))
   (test 'a (icar abc))
   (test 'b (icadr abc))
   (test 'c (icaddr abc))
   (test (ipair 2 1) (xipair 1 2))
-  (define abc-dot-d (ipair* 'a 'b 'c 'd))
   (test 'd (icdddr abc-dot-d))
   (test (iq c c c c) (make-ilist 4 'c))
   (test (iq 0 1 2 3) (ilist-tabulate 4 values))
   (test (iq 0 1 2 3 4) (iiota 5))
-  (define abc-copy (ilist-copy abc))
   (test abc abc-copy)
   (test-assert (not (eq? abc abc-copy)))
 ) ; end ilists/constructors
@@ -41,22 +44,22 @@
   (test-assert (not (ilist= = (iq 1 2 3) (iq 1 2 3) (iq 1 2 3 4))))
 ) ; end ilist/predicates
 
+(define ab (ipair 'a 'b))
+(define cd (ipair 'c 'd))
+(define ef (ipair 'e 'f))
+(define gh (ipair 'g 'h))
+(define abcd (ipair ab cd))
+(define efgh (ipair ef gh))
+(define abcdefgh (ipair abcd efgh))
+(define ij (ipair 'i 'j))
+(define kl (ipair 'k 'l))
+(define mn (ipair 'm 'n))
+(define op (ipair 'o 'p))
+(define ijkl (ipair ij kl))
+(define mnop (ipair mn op))
+(define ijklmnop (ipair ijkl mnop))
+(define abcdefghijklmnop (ipair abcdefgh ijklmnop))
 (test-group "ilist/cxrs"
-  (define ab (ipair 'a 'b))
-  (define cd (ipair 'c 'd))
-  (define ef (ipair 'e 'f))
-  (define gh (ipair 'g 'h))
-  (define abcd (ipair ab cd))
-  (define efgh (ipair ef gh))
-  (define abcdefgh (ipair abcd efgh))
-  (define ij (ipair 'i 'j))
-  (define kl (ipair 'k 'l))
-  (define mn (ipair 'm 'n))
-  (define op (ipair 'o 'p))
-  (define ijkl (ipair ij kl))
-  (define mnop (ipair mn op))
-  (define ijklmnop (ipair ijkl mnop))
-  (define abcdefghijklmnop (ipair abcdefgh ijklmnop))
   (test 'a (icaar abcd))
   (test 'b (icdar abcd))
   (test 'c (icadr abcd))
@@ -87,9 +90,11 @@
   (test 'p (icddddr abcdefghijklmnop))
 ) ; end ilists/cxrs
 
+(define ten (ilist 1 2 3 4 5 6 7 8 9 10))
+(define abcde (iq a b c d e))
+(define dotted (ipair 1 (ipair 2 (ipair 3 'd))))
 (test-group "ilists/selectors"
   (test 'c (ilist-ref (iq a b c d) 2))
-  (define ten (ilist 1 2 3 4 5 6 7 8 9 10))
   (test 1 (ifirst ten))
   (test 2 (isecond ten))
   (test 3 (ithird ten))
@@ -102,8 +107,6 @@
   (test 10 (itenth ten))
   (test-error (ilist-ref '() 2))
   (test '(1 2) (call-with-values (lambda () (icar+icdr (ipair 1 2))) list))
-  (define abcde (iq a b c d e))
-  (define dotted (ipair 1 (ipair 2 (ipair 3 'd))))
   (test (iq a b) (itake abcde 2))
   (test (iq c d e) (idrop abcde 2))
   (test (iq c d e) (ilist-tail abcde 2))
@@ -160,11 +163,14 @@
   (test 3 (icount < (iq 1 2 4 8) (iq 2 4 6 8 10 12 14 16)))
 ) ; end ilists/misc
 
+(define lis (iq 1 2 3))
+(define (z x y ans) (ipair (ilist x y) ans))
+(define squares (iq 1 4 9 16 25 36 49 64 81 100))
+(define zz (let ((count 0)) (lambda (ignored) (set! count (+ count 1)) count)))
 (test-group "ilists/folds"
   ;; We have to be careful to test both single-list and multiple-list
   ;; code paths, as they are different in this implementation.
 
-  (define lis (iq 1 2 3))
   (test 6 (ifold + 0 lis))
   (test (iq 3 2 1) (ifold ipair '() lis))
   (test 2 (ifold
@@ -180,7 +186,6 @@
              0
              (iq 1 2 3)
              (iq 4 5 6)))
-  (define (z x y ans) (ipair (ilist x y) ans))
   (test (iq (b d) (a c))
     (ifold z '() (iq a b) (iq c d)))
   (test lis (ifold-right ipair '() lis))
@@ -201,7 +206,6 @@
   (test 5 (ireduce max 0 (iq 1 3 5 4 2 0)))
   (test 1 (ireduce - 0 (iq 1 2)))
   (test -1 (ireduce-right - 0 (iq 1 2)))
-  (define squares (iq 1 4 9 16 25 36 49 64 81 100))
   (test squares
    (iunfold (lambda (x) (> x 10))
      (lambda (x) (* x x))
@@ -220,8 +224,7 @@
   (test (iq b e h) (imap-in-order icadr (iq (a b) (d e) (g h))))
   (test (iq 5 7 9) (imap + (iq 1 2 3) (iq 4 5 6)))
   (test (iq 5 7 9) (imap-in-order + (iq 1 2 3) (iq 4 5 6)))
-  (define z (let ((count 0)) (lambda (ignored) (set! count (+ count 1)) count)))
-  (test (iq 1 2) (imap-in-order z (iq a b)))
+  (test (iq 1 2) (imap-in-order zz (iq a b)))
   (test '#(0 1 4 9 16)
     (let ((v (make-vector 5)))
       (ifor-each (lambda (i)
@@ -255,7 +258,7 @@
     (ifilter-map
       (lambda (x y) (and (number? x) (number? y) (+ x y)))
       (iq 1 a 2 b 3 4)
-      (iq 4 0 5 y 6 z)))
+      (iq 4 0 5 y 6 zz)))
 ) ; end ilists/folds
 
 (test-group "ilists/filtering"
@@ -309,13 +312,13 @@
   (test (iq a b c z) (idelete-duplicates (iq a b a c a b c z)))
 ) ; end ilists/deletion
 
+(define e (iq (a 1) (b 2) (c 3))) (test (iq a 1) (iassq 'a e))
+(define e2 (iq (2 3) (5 7) (11 13)))
 (test-group "ilists/alists"
-  (define e (iq (a 1) (b 2) (c 3))) (test (iq a 1) (iassq 'a e))
   (test (iq b 2) (iassq 'b e))
   (test #f (iassq 'd e))
   (test #f (iassq (ilist 'a) (iq ((a)) ((b)) ((c)))))
   (test (iq (a)) (iassoc (ilist 'a) (iq ((a)) ((b)) ((c)))))
-  (define e2 (iq (2 3) (5 7) (11 13)))
   (test (iq 5 7) (iassv 5 e2))
   (test (iq 11 13) (iassoc 5 e2 <))
   (test (ipair (iq 1 1) e2) (ialist-cons 1 (ilist 1) e2))
@@ -342,7 +345,5 @@
   (test 6 (iapply + (iq 1 2 3)))
   (test 15 (iapply + 1 2 (iq 3 4 5)))
 ) ; end ilists/conversion
-
-) ; end ilists
 
 (test-exit)
