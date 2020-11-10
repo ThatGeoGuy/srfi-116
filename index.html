@@ -1,4 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 3.2//EN">
+<!DOCTYPE html>
 <html>
   <head>
     <title>Immutable List Library</title>
@@ -21,7 +21,9 @@
   <body>
     <h1>SRFI 116: Immutable List Library</h1>
     <p class="authors">by John Cowan</p>
-    <p class="status">status: <em>final</em> (2014/11/28)</p>
+    <p class="based-on"></p>
+    <p class="status">status: <em>final</em> (2014-11-28)</p>
+    <p class="keywords">keywords: <a href="https://srfi.schemers.org/?keywords=data-structure">Data Structure</a>, <a href="https://srfi.schemers.org/?keywords=r7rs-large">R7RS Large</a>, <a href="https://srfi.schemers.org/?keywords=r7rs-large-red">R7RS Large: Red Edition</a></p>
 
     <ul class="info">
       <li><a href="srfi-116.html">The SRFI Document</a></li>
@@ -30,48 +32,50 @@
       <li>
         <a href="mailto:srfi-116@srfi.schemers.org">srfi-116@<span class="antispam">nospam</span>srfi.schemers.org (subscribers only)</a></li>
       <li>
-        <form method="POST" action="https://www.simplelists.com/subscribe.php">
-          <div class="title">Subscribe to srfi-116 mailing list</div>
-          <input name="email"
-                 placeholder="email address"
-                 tabindex="1"
-                 type="email" >
-          <input name="name"
-                 placeholder="full name"
-                 tabindex="2"
-                 type="text" >
-          <p>
-            <input id="sub-digest"
-                   name="digest"
-                   tabindex="3"
-                   type="checkbox"
-                   value="digest" >
-            <label for="sub-digest">daily digest?</label></p>
-          <input class="submit"
-                 name="submit"
-                 tabindex="4"
-                 type="submit"
-                 value="Subscribe to srfi-116" >
-          <input type="hidden" name="action" value="subscribe">
-          <input type="hidden" name="list" value="srfi-116@srfi.schemers.org"></form></li>
+        <span class="firefox-column-workaround">
+          <form method="POST" action="https://www.simplelists.com/subscribe.php">
+            <div class="title">Subscribe to srfi-116 mailing list</div>
+            <input name="email"
+                   placeholder="email address"
+                   tabindex="1"
+                   type="email" >
+            <input name="name"
+                   placeholder="full name"
+                   tabindex="2"
+                   type="text" >
+            <p>
+              <input id="sub-digest"
+                     name="digest"
+                     tabindex="3"
+                     type="checkbox"
+                     value="digest" >
+              <label for="sub-digest">daily digest?</label></p>
+            <input class="submit"
+                   name="submit"
+                   tabindex="4"
+                   type="submit"
+                   value="Subscribe to srfi-116" >
+            <input type="hidden" name="action" value="subscribe">
+            <input type="hidden" name="list" value="srfi-116@srfi.schemers.org"></form></a></li>
       <li>
-        <form method="POST" action="https://www.simplelists.com/subscribe.php">
-          <p class="title">Unsubscribe from srfi-116 mailing list</p>
-          <input name="email"
-                 placeholder="email address"
-                 tabindex="5"
-                 type="email" >
-          <input class="submit"
-                 name="submit"
-                 tabindex="6"
-                 type="submit"
-                 value="Unsubscribe from srfi-116" >
-          <input name="action"
-                 type="hidden"
-                 value="unsubscribe" >
-          <input name="list"
-                 type="hidden"
-                 value="srfi-116@srfi.schemers.org"></form></li></ul>
+        <span class="firefox-column-workaround">
+          <form method="POST" action="https://www.simplelists.com/subscribe.php">
+            <p class="title">Unsubscribe from srfi-116 mailing list</p>
+            <input name="email"
+                   placeholder="email address"
+                   tabindex="5"
+                   type="email" >
+            <input class="submit"
+                   name="submit"
+                   tabindex="6"
+                   type="submit"
+                   value="Unsubscribe from srfi-116" >
+            <input name="action"
+                   type="hidden"
+                   value="unsubscribe" >
+            <input name="list"
+                   type="hidden"
+                   value="srfi-116@srfi.schemers.org"></form></a></li></ul>
     <h2>Abstract</h2>      <p>Scheme currently does not provide immutable
       pairs corresponding to its existing mutable pairs, although most uses of
       pairs do not exploit their mutability. The <a href=
