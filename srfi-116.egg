@@ -1,7 +1,7 @@
 ;; -*- Hen -*-
 
 ((synopsis "SRFI-116: Immutable Lists.")
- (version "1.5")
+ (version "1.6")
  (license "BSD")
  (category data)
  (test-dependencies test)
